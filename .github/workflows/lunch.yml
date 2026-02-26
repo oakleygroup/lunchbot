@@ -23,6 +23,8 @@ from zoneinfo import ZoneInfo
 tz = ZoneInfo("Europe/London")
 now = datetime.now(tz)
 
+print("Current hour:", now.hour)
+
 if now.hour != 12:
 exit()
 
