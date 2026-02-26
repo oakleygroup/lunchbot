@@ -1,0 +1,51 @@
+name: Lunch Bot
+
+on:
+  schedule:
+    - cron: '0 11,12 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  send-lunch-message:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send lunch message
+        run: |
+          pip install zulip
+          python <<EOF
+          import os
+          import zulip
+          import random
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+
+          tz = ZoneInfo("Europe/London")
+          now = datetime.now(tz)
+
+          if now.hour != 12:
+              exit()
+
+          client = zulip.Client(
+              email=os.environ["ZULIP_EMAIL"],
+              api_key=os.environ["ZULIP_API_KEY"],
+              site=os.environ["ZULIP_SITE"],
+          )
+
+          messages = [
+              "lunchtime!",
+          ]
+
+          client.send_message({
+              "type": "stream",
+              "to": os.environ["ZULIP_STREAM"],
+              "topic": os.environ["ZULIP_TOPIC"],
+              "content": random.choice(messages),
+          })
+          EOF
+        env:
+          ZULIP_EMAIL: ${{ secrets.ZULIP_EMAIL }}
+          ZULIP_API_KEY: ${{ secrets.ZULIP_API_KEY }}
+          ZULIP_SITE: ${{ secrets.ZULIP_SITE }}
+          ZULIP_STREAM: ${{ secrets.ZULIP_STREAM }}
+          ZULIP_TOPIC: ${{ secrets.ZULIP_TOPIC }}
