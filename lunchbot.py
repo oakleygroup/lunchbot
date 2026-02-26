@@ -5,8 +5,8 @@ from zoneinfo import ZoneInfo
 tz = ZoneInfo("Europe/London")
 now = datetime.now(tz)
 
-if now.hour != 12:
-    exit()
+#if now.hour != 12:
+#    exit()
 
 client = zulip.Client(
     email="lunch-bot@oakleygroup.zulipchat.com",
