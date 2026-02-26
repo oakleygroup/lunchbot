@@ -7,7 +7,8 @@ now = datetime.now(tz)
 
 #if now.hour != 12:
 #    exit()
-
+# Temporary test — always send
+print("Forcing message send for test")
 client = zulip.Client(
     email="lunch-bot@oakleygroup.zulipchat.com",
     api_key="Mfy70yNDzTemShSL5vz9PtUVzPKEIM1k",
